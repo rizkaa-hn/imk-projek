@@ -1,0 +1,100 @@
+<!-----<div class="box">
+            <?php
+            $select_comments = $conn->prepare("SELECT * FROM `comments` WHERE admin_id = ?");
+            $select_comments->execute([$admin_id]);
+            $select_comments->execute();
+            $numbers_of_comments = $select_comments->rowCount();
+            ?>
+            <h3><?= $numbers_of_comments; ?></h3>
+            <p>comments added</p>
+            <a href="comments.php" class="btn">see comments</a>
+         </div>----->
+
+
+<!----READE POST
+<section class="comments" style="padding-top: 0;">
+
+   <p class="comment-title">post comments</p>
+   <div class="box-container">
+      <?php
+      /*$select_comments = $conn->prepare("SELECT * FROM `comments` WHERE post_id = ?");
+      $select_comments->execute([$get_id]);
+      if ($select_comments->rowCount() > 0) {
+         while ($fetch_comments = $select_comments->fetch(PDO::FETCH_ASSOC)) {
+      ?>
+            <div class="box">
+               <div class="user">
+                  <i class="fas fa-user"></i>
+                  <div class="user-info">
+                     <span><?= $fetch_comments['user_name']; ?></span>
+                     <div><?= $fetch_comments['date']; ?></div>
+                  </div>
+               </div>
+               <div class="text"><?= $fetch_comments['comment']; ?></div>
+               <form action="" method="POST">
+                  <input type="hidden" name="comment_id" value="<?= $fetch_comments['id']; ?>">
+                  <button type="submit" class="inline-delete-btn" name="delete_comment" onclick="return confirm('delete this comment?');">delete comment</button>
+               </form>
+            </div>
+      <?php
+         }
+      } else {
+         echo '<p class="empty">no comments added yet!</p>';
+      }
+      ?>
+   </div>
+
+</section>------>
+
+
+<div class="box">
+            <?php
+            $select_profile = $conn->prepare("SELECT * FROM `users` WHERE id = ?");
+            $select_profile->execute([$user_id]);
+            if ($select_profile->rowCount() > 0) {
+               $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
+               $count_user_comments = $conn->prepare("SELECT * FROM `comments` WHERE user_id = ?");
+               $count_user_comments->execute([$user_id]);
+               $total_user_comments = $count_user_comments->rowCount();
+               $count_user_likes = $conn->prepare("SELECT * FROM `likes` WHERE user_id = ?");
+               $count_user_likes->execute([$user_id]);
+               $total_user_likes = $count_user_likes->rowCount();
+            ?>
+               <p> welcome <span><?= $fetch_profile['name']; ?></span></p>
+               <p>posts liked : <span><?= $total_user_likes; ?></span></p>
+               <a href="update.php" class="btn">update profile</a>
+               <div class="flex-btn">
+                  <a href="user_likes.php" class="option-btn">likes</a>
+               </div>
+            <?php
+            } else {
+            ?>
+               <p class="name">login or register!</p>
+               <div class="flex-btn">
+                  <a href="login.php" class="option-btn">login</a>
+                  <a href="register.php" class="option-btn">register</a>
+               </div>
+            <?php
+            }
+            ?>
+         </div>
+
+         <div class="box">
+            <p>authors</p>
+            <div class="flex-box">
+               <?php
+               $select_authors = $conn->prepare("SELECT DISTINCT name FROM `admin` LIMIT 10");
+               $select_authors->execute();
+               if ($select_authors->rowCount() > 0) {
+                  while ($fetch_authors = $select_authors->fetch(PDO::FETCH_ASSOC)) {
+               ?>
+                     <a href="author_posts.php?author=<?= $fetch_authors['name']; ?>" class="links"><?= $fetch_authors['name']; ?></a>
+               <?php
+                  }
+               } else {
+                  echo '<p class="empty">no posts added yet!</p>';
+               }
+               ?>
+               <a href="authors.php" class="btn">view all</a>
+            </div>
+         </div>
